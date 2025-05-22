@@ -8,6 +8,7 @@
 - **언어**: TypeScript
 - **스타일링**: TailwindCSS
 - **콘텐츠**: 마크다운 기반 블로그 포스트
+- **호스팅**: GitHub Pages
 
 ## 주요 기능
 
@@ -15,6 +16,7 @@
 - 반응형 레이아웃으로 모든 디바이스에서 최적화된 경험 제공
 - 블로그 포스트 검색 및 카테고리 필터링
 - 마크다운 기반 블로그 콘텐츠 지원
+- GitHub Actions를 통한 자동 배포
 
 ## 개발 방법
 
@@ -44,6 +46,7 @@ npm run dev
 │   ├── styles/       # 글로벌 스타일
 │   ├── types/        # TypeScript 타입 정의
 │   └── utils/        # 유틸리티 함수
+├── .github/          # GitHub Actions 워크플로우
 ├── next.config.js    # Next.js 설정
 ├── tailwind.config.js # TailwindCSS 설정
 └── tsconfig.json     # TypeScript 설정
@@ -51,11 +54,31 @@ npm run dev
 
 ## 배포
 
+### 수동 배포
+
 ```bash
-npm run build
+npm run deploy
 ```
 
-그런 다음 생성된 `out` 디렉토리를 웹 서버나 Vercel, Netlify 등의 정적 호스팅 서비스에 배포할 수 있습니다.
+### GitHub Actions를 통한 자동 배포
+
+메인 브랜치에 푸시하면 `.github/workflows/deploy.yml` 워크플로우를 통해 자동으로 GitHub Pages에 배포됩니다.
+
+## 블로그 포스트 작성하기
+
+1. `src/posts/` 디렉토리에 `.md` 확장자를 가진 마크다운 파일을 생성합니다.
+2. 다음과 같은 형식의 YAML 프론트매터를 파일 상단에 추가합니다:
+
+```md
+---
+title: '포스트 제목'
+date: '2023-05-22'
+description: '포스트 설명'
+tags: ['태그1', '태그2']
+---
+
+마크다운 콘텐츠를 여기에 작성합니다...
+```
 
 ## 라이센스
 
