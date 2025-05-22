@@ -21,8 +21,7 @@ const Footer = () => {
               <span className="font-bold text-xl">TUAZAR</span>
             </Link>
             <p className="text-light-gray max-w-md">
-              기술 기업 및 새로운 비즈니스를 위한 혁신적인 디자인 솔루션을 제공합니다. 
-              최신 기술 트렌드와 디자인 인사이트를 공유합니다.
+              AI agent 개발 및 최신 기술 정보를 공유합니다. 때로는 하고 싶은 것을 올리기도 합니다.
             </p>
           </div>
 
@@ -30,10 +29,10 @@ const Footer = () => {
           <div>
             <h3 className="text-lg font-semibold mb-4">바로가기</h3>
             <ul className="space-y-2">
-              <li><Link href="/features" className="text-light-gray hover:text-white transition-colors">Features</Link></li>
-              <li><Link href="/how-it-works" className="text-light-gray hover:text-white transition-colors">How it works</Link></li>
-              <li><Link href="/testimonials" className="text-light-gray hover:text-white transition-colors">Testimonials</Link></li>
-              <li><Link href="/faqs" className="text-light-gray hover:text-white transition-colors">FAQs</Link></li>
+              <li><Link href="/" className="text-light-gray hover:text-white transition-colors">홈</Link></li>
+              <li><Link href="/about" className="text-light-gray hover:text-white transition-colors">소개</Link></li>
+              <li><Link href="/blog" className="text-light-gray hover:text-white transition-colors">블로그</Link></li>
+              <li><Link href="/project" className="text-light-gray hover:text-white transition-colors">프로젝트</Link></li>
             </ul>
           </div>
 
@@ -41,12 +40,15 @@ const Footer = () => {
           <div>
             <h3 className="text-lg font-semibold mb-4">연락처</h3>
             <ul className="space-y-2">
-              <li className="text-light-gray">이메일: contact@tuazar.com</li>
-              <li className="text-light-gray">깃허브: github.com/TUAZAR</li>
-              <li className="text-light-gray">트위터: @tuazar_tech</li>
+              <li className="text-light-gray">이메일: tuazar@gmail.com</li>
+              <li className="text-light-gray">
+                <a href="https://github.com/TUAZAR" target="_blank" rel="noopener noreferrer" className="hover:text-white">
+                  깃허브: github.com/TUAZAR
+                </a>
+              </li>
               <li>
-                <Link href="/notify-me" className="text-accent hover:underline">
-                  업데이트 알림 받기
+                <Link href="/blog" className="text-accent hover:underline">
+                  최신 포스트 보기
                 </Link>
               </li>
             </ul>
@@ -59,11 +61,11 @@ const Footer = () => {
             © {new Date().getFullYear()} TUAZAR. All rights reserved.
           </p>
           <div className="mt-4 md:mt-0 flex space-x-6">
-            <Link href="/privacy" className="text-light-gray hover:text-white text-sm">
-              개인정보처리방침
-            </Link>
-            <Link href="/terms" className="text-light-gray hover:text-white text-sm">
-              이용약관
+            <a href="https://github.com/TUAZAR" target="_blank" rel="noopener noreferrer" className="text-light-gray hover:text-white text-sm">
+              GitHub
+            </a>
+            <Link href="/blog" className="text-light-gray hover:text-white text-sm">
+              블로그
             </Link>
           </div>
         </div>

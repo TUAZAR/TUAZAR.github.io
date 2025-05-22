@@ -25,16 +25,16 @@ const Navbar = () => {
 
         {/* 데스크톱 메뉴 */}
         <div className="hidden md:flex space-x-8">
-          <Link href="/blog" className="nav-link">블로그</Link>
-          <Link href="/projects" className="nav-link">프로젝트</Link>
-          <Link href="/tech-stack" className="nav-link">기술 스택</Link>
+          <Link href="/" className="nav-link">홈</Link>
           <Link href="/about" className="nav-link">소개</Link>
+          <Link href="/blog" className="nav-link">블로그</Link>
+          <Link href="/project" className="nav-link">프로젝트</Link>
         </div>
 
         {/* 데스크톱 CTA 버튼 */}
         <div className="hidden md:block">
-          <Link href="/contact" className="btn btn-primary">
-            연락하기
+          <Link href="/blog" className="btn btn-primary">
+            최신 포스트
           </Link>
         </div>
 
@@ -59,12 +59,12 @@ const Navbar = () => {
       {isMobileMenuOpen && (
         <div className="md:hidden bg-secondary py-4 px-4 absolute w-full border-b border-white/10">
           <div className="flex flex-col space-y-4">
+            <Link href="/" className="nav-link">홈</Link>
             <Link href="/blog" className="nav-link">블로그</Link>
-            <Link href="/projects" className="nav-link">프로젝트</Link>
-            <Link href="/tech-stack" className="nav-link">기술 스택</Link>
             <Link href="/about" className="nav-link">소개</Link>
-            <Link href="/contact" className="btn btn-primary text-center">
-              연락하기
+            <Link href="/contact" className="nav-link">문의하기</Link>
+            <Link href="/blog" className="btn btn-primary text-center">
+              최신 포스트
             </Link>
           </div>
         </div>
