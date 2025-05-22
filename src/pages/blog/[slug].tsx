@@ -3,130 +3,50 @@ import { GetStaticProps, GetStaticPaths } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import MainLayout from '@/layouts/MainLayout';
-
-// 임시 데이터 (실제로는 API나 마크다운 파일에서 데이터를 가져와야 함)
-const DUMMY_POSTS = [
-  {
-    title: 'Next.js와 React로 빠른 웹 애플리케이션 구축하기',
-    excerpt: 'Next.js는 React 프레임워크로, 서버 사이드 렌더링, 정적 사이트 생성 등 다양한 렌더링 방식을 지원합니다. 이 글에서는 Next.js를 활용한 웹 애플리케이션 개발 방법을 알아봅니다.',
-    content: `
-# Next.js와 React로 빠른 웹 애플리케이션 구축하기
-
-Next.js는 React 기반의 프레임워크로, 서버 사이드 렌더링(SSR), 정적 사이트 생성(SSG), 증분 정적 재생성(ISR) 등 다양한 렌더링 방식을 지원합니다. 이러한 기능을 통해 개발자는 더 빠르고 SEO 친화적인 웹 애플리케이션을 쉽게 구축할 수 있습니다.
-
-## Next.js의 주요 특징
-
-### 1. 다양한 렌더링 방식
-
-Next.js는 페이지별로 렌더링 방식을 선택할 수 있습니다:
-
-- **정적 생성 (Static Generation)**: 빌드 시점에 HTML을 생성하여 CDN에서 제공
-- **서버 사이드 렌더링 (Server-side Rendering)**: 요청 시점에 서버에서 HTML 생성
-- **증분 정적 재생성 (Incremental Static Regeneration)**: 정적 페이지를 백그라운드에서 주기적으로 재생성
-
-### 2. 파일 기반 라우팅
-
-pages 디렉토리에 파일을 생성하면 자동으로 라우트가 설정됩니다. 예를 들어:
-
-- \`pages/index.js\` → \`/\`
-- \`pages/about.js\` → \`/about\`
-- \`pages/blog/[slug].js\` → \`/blog/:slug\`
-
-### 3. API 라우트
-
-Next.js는 \`pages/api\` 디렉토리에 API 엔드포인트를 쉽게 생성할 수 있습니다. 이를 통해 서버리스 함수를 구현할 수 있습니다.
-
-## Next.js 프로젝트 시작하기
-
-1. 새 프로젝트 생성:
-
-\`\`\`bash
-npx create-next-app my-app
-cd my-app
-\`\`\`
-
-2. 개발 서버 실행:
-
-\`\`\`bash
-npm run dev
-\`\`\`
-
-3. 브라우저에서 \`http://localhost:3000\` 접속
-
-## 성능 최적화
-
-Next.js는 자동 코드 스플리팅, 이미지 최적화, 프리페칭 등 다양한 성능 최적화 기능을 제공합니다.
-
-### Image 컴포넌트
-
-Next.js의 Image 컴포넌트는 자동 이미지 최적화, 지연 로딩 등의 기능을 제공합니다:
-
-\`\`\`jsx
-import Image from 'next/image'
-
-function Home() {
-  return (
-    <Image
-      src="/profile.jpg"
-      alt="Profile"
-      width={500}
-      height={300}
-      priority
-    />
-  )
-}
-\`\`\`
-
-## 결론
-
-Next.js는 React 애플리케이션 개발을 위한 강력한 프레임워크로, 다양한 렌더링 방식과 최적화 기능을 통해 빠르고 효율적인 웹 사이트 구축을 가능하게 합니다. 프로덕션 환경에서 사용할 수 있는 많은 기능을 내장하고 있어, 개발자가 핵심 비즈니스 로직에 집중할 수 있도록 도와줍니다.
-    `,
-    slug: 'nextjs-react-web-app',
-    coverImage: '/images/blog/nextjs.webp',
-    date: '2023-05-15',
-    author: {
-      name: '김기술',
-      avatar: '/images/avatars/author1.jpg',
-      bio: '프론트엔드 개발자 | Next.js 및 React 전문가'
-    },
-    tags: ['Next.js', 'React', '웹개발'],
-  },
-  // 다른 포스트 데이터...
-];
+import { getAllPostIds, getPostData } from '@/lib/posts';
 
 interface BlogPostProps {
-  post: typeof DUMMY_POSTS[0];
-  relatedPosts: typeof DUMMY_POSTS;
+  post: {
+    id: string;
+    title: string;
+    date: string;
+    contentHtml: string;
+    description: string;
+    tags: string[];
+    coverImage?: string;
+    author?: {
+      name: string;
+      avatar: string;
+      bio?: string;
+    };
+  };
 }
 
-const BlogPost = ({ post, relatedPosts }: BlogPostProps) => {
-  // 마크다운 내용을 HTML로 변환하는 함수 (실제로는 remark, remark-html 등을 사용해야 함)
-  const renderMarkdown = (content: string) => {
-    // 여기서는 간단하게 처리합니다 (실제로는 마크다운 파서 사용 필요)
-    return content
-      .replace(/^# (.*$)/gm, '<h1 class="text-3xl font-bold mt-8 mb-4">$1</h1>')
-      .replace(/^## (.*$)/gm, '<h2 class="text-2xl font-bold mt-6 mb-3">$1</h2>')
-      .replace(/^### (.*$)/gm, '<h3 class="text-xl font-bold mt-5 mb-2">$1</h3>')
-      .replace(/\*\*(.*)\*\*/gm, '<strong>$1</strong>')
-      .replace(/\*(.*)\*/gm, '<em>$1</em>')
-      .replace(/```([\s\S]*?)```/gm, '<pre class="bg-dark-gray p-4 rounded-lg overflow-x-auto my-4"><code>$1</code></pre>')
-      .replace(/`([^`]+)`/gm, '<code class="bg-dark-gray px-1 rounded">$1</code>')
-      .replace(/^- (.*$)/gm, '<li class="ml-4">$1</li>')
-      .replace(/\n\n/gm, '<p class="my-4"></p>');
-  };
+// 기본 이미지 및 작성자 정보
+const DEFAULT_COVER_IMAGE = '/images/blog/default-cover.svg';
+const DEFAULT_AUTHOR = {
+  name: 'TUAZAR',
+  avatar: '/images/avatars/default-avatar.svg',
+  bio: '기술 블로그 작성자'
+};
 
+const BlogPost = ({ post }: BlogPostProps) => {
   if (!post) {
     return <div>포스트를 찾을 수 없습니다.</div>;
   }
 
+  // 포스트 데이터가 없는 경우 기본값 설정
+  const author = post.author || DEFAULT_AUTHOR;
+  const coverImage = post.coverImage || DEFAULT_COVER_IMAGE;
+
   return (
-    <MainLayout title={`${post.title} - TUAZAR 기술 블로그`} description={post.excerpt}>
+    <MainLayout title={`${post.title} - TUAZAR 기술 블로그`} description={post.description}>
       {/* 헤더 섹션 */}
       <section className="py-20 bg-gradient-to-b from-secondary to-primary">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <div className="flex gap-3 mb-6">
-              {post.tags.map((tag) => (
+              {post.tags?.map((tag) => (
                 <span
                   key={tag}
                   className="text-xs font-medium px-2.5 py-0.5 rounded-full bg-accent/20 text-accent"
@@ -141,22 +61,23 @@ const BlogPost = ({ post, relatedPosts }: BlogPostProps) => {
             </h1>
             
             <p className="text-xl text-light-gray mb-8">
-              {post.excerpt}
+              {post.description}
             </p>
             
             <div className="flex items-center justify-between border-t border-white/10 pt-6">
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-full overflow-hidden relative">
                   <Image
-                    src={post.author.avatar}
-                    alt={post.author.name}
+                    src={author.avatar}
+                    alt={author.name}
                     fill
                     className="object-cover"
+                    unoptimized
                   />
                 </div>
                 <div>
-                  <p className="font-medium">{post.author.name}</p>
-                  <p className="text-sm text-light-gray">{post.author.bio}</p>
+                  <p className="font-medium">{author.name}</p>
+                  <p className="text-sm text-light-gray">{author.bio}</p>
                 </div>
               </div>
               <div className="text-light-gray">
@@ -170,10 +91,11 @@ const BlogPost = ({ post, relatedPosts }: BlogPostProps) => {
       {/* 커버 이미지 */}
       <div className="relative h-96 w-full">
         <Image
-          src={post.coverImage}
+          src={coverImage}
           alt={post.title}
           fill
           className="object-cover"
+          unoptimized
         />
       </div>
       
@@ -182,14 +104,14 @@ const BlogPost = ({ post, relatedPosts }: BlogPostProps) => {
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto">
             <article className="prose prose-lg prose-invert max-w-none">
-              <div dangerouslySetInnerHTML={{ __html: renderMarkdown(post.content) }} />
+              <div dangerouslySetInnerHTML={{ __html: post.contentHtml }} />
             </article>
             
             {/* 소셜 공유 및 태그 */}
             <div className="mt-12 pt-6 border-t border-white/10">
               <div className="flex flex-col md:flex-row justify-between items-center gap-4">
                 <div className="flex gap-3">
-                  {post.tags.map((tag) => (
+                  {post.tags?.map((tag) => (
                     <Link
                       key={tag}
                       href={`/blog?tag=${tag}`}
@@ -231,15 +153,16 @@ const BlogPost = ({ post, relatedPosts }: BlogPostProps) => {
               <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
                 <div className="w-24 h-24 rounded-full overflow-hidden relative">
                   <Image
-                    src={post.author.avatar}
-                    alt={post.author.name}
+                    src={author.avatar}
+                    alt={author.name}
                     fill
                     className="object-cover"
+                    unoptimized
                   />
                 </div>
                 <div className="text-center md:text-left">
-                  <h3 className="text-xl font-bold mb-2">{post.author.name}</h3>
-                  <p className="text-light-gray mb-4">{post.author.bio}</p>
+                  <h3 className="text-xl font-bold mb-2">{author.name}</h3>
+                  <p className="text-light-gray mb-4">{author.bio}</p>
                   <div className="flex justify-center md:justify-start gap-4">
                     <a href="#" className="text-accent hover:underline">Twitter</a>
                     <a href="#" className="text-accent hover:underline">GitHub</a>
@@ -251,43 +174,14 @@ const BlogPost = ({ post, relatedPosts }: BlogPostProps) => {
           </div>
         </div>
       </section>
-      
-      {/* 관련 포스트 */}
-      <section className="py-16">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold mb-8 text-center">관련 포스트</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {relatedPosts.slice(0, 3).map((relatedPost) => (
-              <Link key={relatedPost.slug} href={`/blog/${relatedPost.slug}`}>
-                <div className="card hover:translate-y-[-5px]">
-                  <div className="relative h-48 mb-4 rounded-xl overflow-hidden">
-                    <Image
-                      src={relatedPost.coverImage}
-                      alt={relatedPost.title}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                  <h3 className="text-xl font-bold mb-2 hover:text-accent transition-colors">
-                    {relatedPost.title}
-                  </h3>
-                  <p className="text-light-gray line-clamp-2">{relatedPost.excerpt}</p>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
     </MainLayout>
   );
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  // 실제로는 모든 포스트 슬러그를 가져와야 함
-  const paths = DUMMY_POSTS.map((post) => ({
-    params: { slug: post.slug },
-  }));
-
+  // 모든 블로그 포스트의 가능한 경로 가져오기
+  const paths = getAllPostIds();
+  
   return {
     paths,
     fallback: false, // 없는 경로는 404
@@ -295,20 +189,12 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  // 실제로는 API나 파일 시스템에서 포스트 데이터를 가져와야 함
-  const post = DUMMY_POSTS.find((p) => p.slug === params?.slug);
-  
-  // 관련 포스트 (같은 태그를 가진 다른 포스트들)
-  const relatedPosts = post
-    ? DUMMY_POSTS.filter(
-        (p) => p.slug !== post.slug && p.tags.some((tag) => post.tags.includes(tag))
-      )
-    : [];
+  // 특정 슬러그의 포스트 데이터 가져오기
+  const post = await getPostData(params?.slug as string);
 
   return {
     props: {
-      post: post || null,
-      relatedPosts: relatedPosts.slice(0, 3), // 최대 3개만
+      post
     },
   };
 };
