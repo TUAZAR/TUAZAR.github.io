@@ -1,0 +1,53 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-primary text-white;
+  }
+}
+
+@layer components {
+  .container {
+    @apply px-4 mx-auto max-w-7xl;
+  }
+  
+  .btn {
+    @apply px-6 py-2 font-medium rounded-full transition-colors;
+  }
+  
+  .btn-primary {
+    @apply bg-accent text-black hover:bg-opacity-90;
+  }
+  
+  .btn-outline {
+    @apply border border-white/20 hover:bg-white/10;
+  }
+  
+  .card {
+    @apply bg-secondary rounded-2xl p-6 transition-all hover:shadow-lg hover:shadow-accent/10;
+  }
+  
+  .nav-link {
+    @apply text-light-gray hover:text-white transition-colors;
+  }
+}
+
+/* 스크롤바 커스텀 */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #171717;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #333333;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #CEFF00;
+} 
