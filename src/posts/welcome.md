@@ -1,6 +1,6 @@
 ---
 title: '환영합니다! 기술 블로그 시작하기'
-date: '2023-05-22'
+date: '2025-05-22'
 description: '깃허브 블로그로 기술 블로그를 시작하는 방법에 대한 첫 번째 포스트입니다.'
 tags: ['next.js', 'github-pages', 'blog']
 ---
