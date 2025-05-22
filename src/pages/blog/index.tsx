@@ -1,94 +1,36 @@
 import React, { useState } from 'react';
+import { GetStaticProps } from 'next';
 import MainLayout from '@/layouts/MainLayout';
 import BlogPostCard from '@/components/BlogPostCard';
-
-// 임시 데이터
-const DUMMY_POSTS = [
-  {
-    title: 'Next.js와 React로 빠른 웹 애플리케이션 구축하기',
-    excerpt: 'Next.js는 React 프레임워크로, 서버 사이드 렌더링, 정적 사이트 생성 등 다양한 렌더링 방식을 지원합니다. 이 글에서는 Next.js를 활용한 웹 애플리케이션 개발 방법을 알아봅니다.',
-    slug: 'nextjs-react-web-app',
-    coverImage: '/images/blog/nextjs.webp',
-    date: '2023-05-15',
-    author: {
-      name: '김기술',
-      avatar: '/images/avatars/author1.jpg',
-    },
-    tags: ['Next.js', 'React', '웹개발'],
-  },
-  {
-    title: 'TailwindCSS로 효율적인 UI 디자인 구현하기',
-    excerpt: 'TailwindCSS는 유틸리티 우선 CSS 프레임워크로, 빠르고 효율적인 UI 개발을 가능하게 합니다. 이 글에서는 TailwindCSS의 기본 개념과 활용법을 소개합니다.',
-    slug: 'tailwindcss-ui-design',
-    coverImage: '/images/blog/tailwind.webp',
-    date: '2023-06-02',
-    author: {
-      name: '이디자인',
-      avatar: '/images/avatars/author2.jpg',
-    },
-    tags: ['TailwindCSS', 'UI/UX', 'CSS'],
-  },
-  {
-    title: '모던 JavaScript의 비동기 프로그래밍',
-    excerpt: 'JavaScript에서 비동기 프로그래밍은 필수적인 개념입니다. Promise, async/await를 활용한 효율적인 비동기 코드 작성법을 알아봅니다.',
-    slug: 'modern-javascript-async',
-    coverImage: '/images/blog/javascript.webp',
-    date: '2023-06-10',
-    author: {
-      name: '박개발',
-      avatar: '/images/avatars/author3.jpg',
-    },
-    tags: ['JavaScript', '비동기', 'Promise'],
-  },
-  {
-    title: 'TypeScript 타입 시스템 마스터하기',
-    excerpt: 'TypeScript의 고급 타입 기능을 활용하여 더 안정적이고 유지보수가 용이한 코드를 작성하는 방법을 살펴봅니다.',
-    slug: 'typescript-type-system',
-    coverImage: '/images/blog/typescript.webp',
-    date: '2023-06-22',
-    author: {
-      name: '최타입',
-      avatar: '/images/avatars/author4.jpg',
-    },
-    tags: ['TypeScript', '타입시스템', '개발'],
-  },
-  {
-    title: 'GraphQL API 설계 가이드',
-    excerpt: 'REST API와 비교하여 GraphQL의 장점과 효율적인 API 설계 방법에 대해 알아봅니다.',
-    slug: 'graphql-api-design',
-    coverImage: '/images/blog/graphql.webp',
-    date: '2023-07-05',
-    author: {
-      name: '정백엔드',
-      avatar: '/images/avatars/author5.jpg',
-    },
-    tags: ['GraphQL', 'API', '백엔드'],
-  },
-  {
-    title: '웹 성능 최적화 전략',
-    excerpt: '웹 애플리케이션의 로딩 속도와 사용자 경험을 향상시키기 위한 다양한 최적화 기법을 소개합니다.',
-    slug: 'web-performance-optimization',
-    coverImage: '/images/blog/performance.webp',
-    date: '2023-07-18',
-    author: {
-      name: '김기술',
-      avatar: '/images/avatars/author1.jpg',
-    },
-    tags: ['성능최적화', '웹개발', 'UX'],
-  },
-];
+import { getSortedPostsData } from '@/lib/posts';
 
 // 블로그 카테고리
 const CATEGORIES = ['전체', 'JavaScript', 'React', 'Next.js', 'TypeScript', 'CSS', 'UI/UX', '백엔드', '성능최적화'];
 
-const BlogPage = () => {
+interface BlogPageProps {
+  posts: Array<{
+    id: string;
+    title: string;
+    date: string;
+    description: string;
+    tags: string[];
+    slug?: string;
+    coverImage?: string;
+    author?: {
+      name: string;
+      avatar: string;
+    };
+  }>;
+}
+
+const BlogPage = ({ posts }: BlogPageProps) => {
   const [activeCategory, setActiveCategory] = useState('전체');
   const [searchQuery, setSearchQuery] = useState('');
 
   // 카테고리 및 검색어 필터링
-  const filteredPosts = DUMMY_POSTS.filter((post) => {
+  const filteredPosts = posts.filter((post) => {
     // 카테고리 필터링
-    if (activeCategory !== '전체' && !post.tags.includes(activeCategory)) {
+    if (activeCategory !== '전체' && !post.tags?.includes(activeCategory)) {
       return false;
     }
     
@@ -97,8 +39,8 @@ const BlogPage = () => {
       const query = searchQuery.toLowerCase();
       return (
         post.title.toLowerCase().includes(query) ||
-        post.excerpt.toLowerCase().includes(query) ||
-        post.tags.some((tag) => tag.toLowerCase().includes(query))
+        post.description.toLowerCase().includes(query) ||
+        post.tags?.some((tag) => tag.toLowerCase().includes(query))
       );
     }
     
@@ -157,7 +99,19 @@ const BlogPage = () => {
           {filteredPosts.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {filteredPosts.map((post) => (
-                <BlogPostCard key={post.slug} {...post} />
+                <BlogPostCard 
+                  key={post.id} 
+                  title={post.title}
+                  excerpt={post.description}
+                  slug={post.slug || post.id}
+                  coverImage={post.coverImage || '/images/blog/default-cover.svg'}
+                  date={post.date}
+                  author={post.author || {
+                    name: 'TUAZAR',
+                    avatar: '/images/avatars/default-avatar.svg'
+                  }}
+                  tags={post.tags || []}
+                />
               ))}
             </div>
           ) : (
@@ -178,6 +132,31 @@ const BlogPage = () => {
       </section>
     </MainLayout>
   );
+};
+
+export const getStaticProps: GetStaticProps = async () => {
+  try {
+    const allPostsData = getSortedPostsData();
+    
+    // 각 포스트에 slug 필드 추가 (id를 slug로 사용)
+    const postsWithSlug = allPostsData.map(post => ({
+      ...post,
+      slug: post.id
+    }));
+    
+    return {
+      props: {
+        posts: postsWithSlug
+      }
+    };
+  } catch (error) {
+    console.error('Error fetching posts:', error);
+    return {
+      props: {
+        posts: []
+      }
+    };
+  }
 };
 
 export default BlogPage; 

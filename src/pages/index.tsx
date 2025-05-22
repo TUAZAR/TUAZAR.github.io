@@ -33,7 +33,7 @@ const TECH_STACK = [
 const DUMMY_POSTS = [
   {
     title: 'Next.js와 React로 빠른 웹 애플리케이션 구축하기',
-    excerpt: 'Next.js는 React 프레임워크로, 서버 사이드 렌더링, 정적 사이트 생성 등 다양한 렌더링 방식을 지원합니다. 이 글에서는 Next.js를 활용한 웹 애플리케이션 개발 방법을 알아봅니다.',
+    description: 'Next.js는 React 프레임워크로, 서버 사이드 렌더링, 정적 사이트 생성 등 다양한 렌더링 방식을 지원합니다. 이 글에서는 Next.js를 활용한 웹 애플리케이션 개발 방법을 알아봅니다.',
     slug: 'nextjs-react-web-app',
     coverImage: '/images/blog/nextjs.webp',
     date: '2023-05-15',
@@ -45,7 +45,7 @@ const DUMMY_POSTS = [
   },
   {
     title: 'TailwindCSS로 효율적인 UI 디자인 구현하기',
-    excerpt: 'TailwindCSS는 유틸리티 우선 CSS 프레임워크로, 빠르고 효율적인 UI 개발을 가능하게 합니다. 이 글에서는 TailwindCSS의 기본 개념과 활용법을 소개합니다.',
+    description: 'TailwindCSS는 유틸리티 우선 CSS 프레임워크로, 빠르고 효율적인 UI 개발을 가능하게 합니다. 이 글에서는 TailwindCSS의 기본 개념과 활용법을 소개합니다.',
     slug: 'tailwindcss-ui-design',
     coverImage: '/images/blog/tailwind.webp',
     date: '2023-06-02',
@@ -57,7 +57,7 @@ const DUMMY_POSTS = [
   },
   {
     title: '모던 JavaScript의 비동기 프로그래밍',
-    excerpt: 'JavaScript에서 비동기 프로그래밍은 필수적인 개념입니다. Promise, async/await를 활용한 효율적인 비동기 코드 작성법을 알아봅니다.',
+    description: 'JavaScript에서 비동기 프로그래밍은 필수적인 개념입니다. Promise, async/await를 활용한 효율적인 비동기 코드 작성법을 알아봅니다.',
     slug: 'modern-javascript-async',
     coverImage: '/images/blog/javascript.webp',
     date: '2023-06-10',
@@ -73,9 +73,14 @@ const DUMMY_POSTS = [
 export async function getStaticProps() {
   try {
     const allPostsData = getSortedPostsData();
+    // 각 포스트에 slug 필드 추가 (id를 slug로 사용)
+    const postsWithSlug = allPostsData.map(post => ({
+      ...post,
+      slug: post.id
+    }));
     return {
       props: {
-        posts: allPostsData
+        posts: postsWithSlug
       }
     };
   } catch (error) {
@@ -138,7 +143,7 @@ const HomePage = ({ posts = [] }) => {
                 <div className="relative h-64 rounded-xl overflow-hidden">
                   <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-purple-500/20 z-10"></div>
                   <Image 
-                    src="/images/dashboard.webp" 
+                    src="images\avatars\ai.jpg" 
                     alt="Dashboard design" 
                     fill
                     className="object-cover"
@@ -147,7 +152,7 @@ const HomePage = ({ posts = [] }) => {
                 <div className="relative h-64 rounded-xl overflow-hidden mt-8">
                   <div className="absolute inset-0 bg-gradient-to-br from-green-500/20 to-blue-500/20 z-10"></div>
                   <Image 
-                    src="/images/mobile-app.webp" 
+                    src="images\avatars\notebook.jpg" 
                     alt="Mobile app design" 
                     fill
                     className="object-cover"
@@ -159,14 +164,14 @@ const HomePage = ({ posts = [] }) => {
               <div className="absolute -top-10 -left-10 p-4 bg-accent/10 backdrop-blur-sm rounded-xl border border-accent/30 text-white">
                 <div className="flex items-center gap-2">
                   <div className="w-3 h-3 rounded-full bg-accent"></div>
-                  <span>React</span>
+                  <span>AI</span>
                 </div>
               </div>
               
               <div className="absolute -bottom-5 right-20 p-4 bg-blue-500/10 backdrop-blur-sm rounded-xl border border-blue-500/30 text-white">
                 <div className="flex items-center gap-2">
                   <div className="w-3 h-3 rounded-full bg-blue-500"></div>
-                  <span>TypeScript</span>
+                  <span>AGENT</span>
                 </div>
               </div>
             </div>
@@ -211,7 +216,19 @@ const HomePage = ({ posts = [] }) => {
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {displayPosts.slice(0, 3).map((post) => (
-              <BlogPostCard key={post.slug} {...post} />
+              <BlogPostCard 
+                key={post.slug || post.id} 
+                title={post.title}
+                excerpt={post.description}
+                slug={post.slug || post.id}
+                coverImage={post.coverImage || '/images/blog/default-cover.svg'}
+                date={post.date}
+                author={post.author || {
+                  name: 'TUAZAR',
+                  avatar: '/images/avatars/default-avatar.svg'
+                }}
+                tags={post.tags || []}
+              />
             ))}
           </div>
           
@@ -228,9 +245,9 @@ const HomePage = ({ posts = [] }) => {
         <div className="container mx-auto">
           <div className="bg-gradient-to-r from-dark-gray to-secondary p-12 rounded-3xl border border-white/10">
             <div className="max-w-2xl mx-auto text-center">
-              <h2 className="text-3xl font-bold mb-4">기술 뉴스레터 구독하기</h2>
+              <h2 className="text-3xl font-bold mb-4">문의하기</h2>
               <p className="text-light-gray mb-8">
-                최신 개발 트렌드와 유용한 기술 팁을 이메일로 받아보세요. 주간 업데이트로 기술 동향을 놓치지 마세요.
+                문의하실 내용을 남겨주세요. 최대한 빠르게 답장해드리겠습니다.
               </p>
               
               <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
