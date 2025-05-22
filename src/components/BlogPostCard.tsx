@@ -13,6 +13,7 @@ interface BlogPostCardProps {
     avatar: string;
   };
   tags: string[];
+  id?: string;
 }
 
 const BlogPostCard = ({

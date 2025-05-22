@@ -211,7 +211,7 @@ const HomePage = ({ posts = [] }) => {
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {displayPosts.slice(0, 3).map((post) => (
-              <BlogPostCard key={post.slug || post.id} {...post} />
+              <BlogPostCard key={post.slug} {...post} />
             ))}
           </div>
           
