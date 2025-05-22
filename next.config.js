@@ -5,8 +5,8 @@ const nextConfig = {
     domains: ['via.placeholder.com', 'images.unsplash.com'],
     unoptimized: true,
   },
-  basePath: process.env.NODE_ENV === 'production' ? '' : '',
-  assetPrefix: process.env.NODE_ENV === 'production' ? '' : '',
+  basePath: process.env.NODE_ENV === 'production' ? '/TUAZAR.github.io' : '',
+  assetPrefix: process.env.NODE_ENV === 'production' ? '/TUAZAR.github.io/' : '',
   trailingSlash: true,
 }
 
