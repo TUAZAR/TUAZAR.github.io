@@ -4,7 +4,8 @@ import Image from 'next/image';
 
 interface BlogPostCardProps {
   title: string;
-  excerpt: string;
+  excerpt?: string;
+  description?: string;
   slug: string;
   coverImage: string;
   date: string;
@@ -19,6 +20,7 @@ interface BlogPostCardProps {
 const BlogPostCard = ({
   title,
   excerpt,
+  description,
   slug,
   coverImage,
   date,
@@ -26,13 +28,15 @@ const BlogPostCard = ({
   tags,
 }: BlogPostCardProps) => {
   // 기본 아바타 이미지 설정
-  const defaultAvatar = '/images/avatars/default-avatar.jpg';
+  const defaultAvatar = '/images/avatars/default-avatar.svg';
+  // description이 있으면 description을 사용하고, 없으면 excerpt를 사용
+  const displayText = description || excerpt;
   
   return (
     <article className="card overflow-hidden hover:translate-y-[-5px]">
       <div className="relative h-48 mb-4 rounded-xl overflow-hidden">
         <Image
-          src={coverImage || '/images/blog/default-cover.jpg'}
+          src={coverImage || '/images/blog/default-cover.svg'}
           alt={title}
           fill
           className="object-cover"
@@ -56,7 +60,7 @@ const BlogPostCard = ({
           </Link>
         </h3>
         
-        <p className="text-light-gray line-clamp-2">{excerpt}</p>
+        <p className="text-light-gray line-clamp-2">{displayText}</p>
         
         <div className="flex items-center justify-between pt-4 border-t border-white/10">
           <div className="flex items-center gap-2">
