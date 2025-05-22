@@ -60,9 +60,9 @@ const Navbar = () => {
         <div className="md:hidden bg-secondary py-4 px-4 absolute w-full border-b border-white/10">
           <div className="flex flex-col space-y-4">
             <Link href="/" className="nav-link">홈</Link>
-            <Link href="/blog" className="nav-link">블로그</Link>
             <Link href="/about" className="nav-link">소개</Link>
-            <Link href="/contact" className="nav-link">문의하기</Link>
+            <Link href="/blog" className="nav-link">블로그</Link>
+            <Link href="/project" className="nav-link">프로젝트</Link>
             <Link href="/blog" className="btn btn-primary text-center">
               최신 포스트
             </Link>
