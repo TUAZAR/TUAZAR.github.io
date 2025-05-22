@@ -24,11 +24,14 @@ const BlogPostCard = ({
   author,
   tags,
 }: BlogPostCardProps) => {
+  // 기본 아바타 이미지 설정
+  const defaultAvatar = '/images/avatars/default-avatar.jpg';
+  
   return (
     <article className="card overflow-hidden hover:translate-y-[-5px]">
       <div className="relative h-48 mb-4 rounded-xl overflow-hidden">
         <Image
-          src={coverImage}
+          src={coverImage || '/images/blog/default-cover.jpg'}
           alt={title}
           fill
           className="object-cover"
@@ -58,13 +61,14 @@ const BlogPostCard = ({
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-full overflow-hidden relative">
               <Image
-                src={author.avatar}
-                alt={author.name}
+                src={author?.avatar || defaultAvatar}
+                alt={author?.name || '작성자'}
                 fill
                 className="object-cover"
+                unoptimized
               />
             </div>
-            <span className="text-sm">{author.name}</span>
+            <span className="text-sm">{author?.name || '작성자'}</span>
           </div>
           <span className="text-sm text-light-gray">{date}</span>
         </div>
