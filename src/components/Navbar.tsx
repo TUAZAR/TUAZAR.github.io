@@ -33,9 +33,12 @@ const Navbar = () => {
 
         {/* 데스크톱 CTA 버튼 */}
         <div className="hidden md:block">
-          <Link href="/blog" className="btn btn-primary">
-            최신 포스트
-          </Link>
+          <a
+            href="mailto:tuazar@gmail.com"
+            className="btn btn-primary"
+          >
+            연락하기
+          </a>
         </div>
 
         {/* 모바일 메뉴 버튼 */}
@@ -63,9 +66,12 @@ const Navbar = () => {
             <Link href="/about" className="nav-link">소개</Link>
             <Link href="/blog" className="nav-link">블로그</Link>
             <Link href="/project" className="nav-link">프로젝트</Link>
-            <Link href="/blog" className="btn btn-primary text-center">
-              최신 포스트
-            </Link>
+            <a
+              href="mailto:tuazar@gmail.com"
+              className="btn btn-primary text-center"
+            >
+              연락하기
+            </a>
           </div>
         </div>
       )}

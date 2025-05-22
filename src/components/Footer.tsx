@@ -40,7 +40,11 @@ const Footer = () => {
           <div>
             <h3 className="text-lg font-semibold mb-4">연락처</h3>
             <ul className="space-y-2">
-              <li className="text-light-gray">이메일: tuazar@gmail.com</li>
+              <li className="text-light-gray">이메일: 
+                <a href="mailto:tuazar@gmail.com" className="text-accent hover:underline ml-1">
+                  tuazar@gmail.com
+                </a>
+              </li>
               <li className="text-light-gray">
                 <a href="https://github.com/TUAZAR" target="_blank" rel="noopener noreferrer" className="hover:text-white">
                   깃허브: github.com/TUAZAR

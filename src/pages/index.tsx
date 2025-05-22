@@ -260,7 +260,7 @@ const HomePage = ({ posts = [] }) => {
                   required
                 />
                 <button type="submit" className="btn btn-primary">
-                  구독하기
+                  문의하기
                 </button>
               </form>
             </div>
