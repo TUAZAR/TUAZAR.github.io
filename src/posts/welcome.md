@@ -7,6 +7,9 @@ tags: ['next.js', 'github-pages', 'blog']
 
 # 깃허브 블로그 시작하기
 
+![immo-wegmann-w69Z8K-HGQU-unsplash](https://github.com/user-attachments/assets/cdfe18e1-6b4c-4e25-bb68-4dd25dbd773b)
+
+
 안녕하세요! 이 포스트는 GitHub Pages와 Next.js를 사용하여 기술 블로그를 시작하는 방법에 대한 첫 번째 포스트입니다.
 
 ## 깃허브 페이지란?
